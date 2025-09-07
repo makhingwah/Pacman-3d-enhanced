@@ -3,7 +3,7 @@
 A modern 3D remake of the classic Pac-Man arcade game featuring full camera control, multiple difficulty modes, and innovative gameplay mechanics.
 
 ## 🎮 Play Now
-[Live Demo](https://yourusername.github.io/pacman-3d/)
+[Live Demo](https://makhingwah.github.io/Pacman-3d-enhanced/)
 
 ## ✨ Features
 
