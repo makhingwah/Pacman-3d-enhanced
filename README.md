@@ -64,7 +64,7 @@ Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 - Mobile touch controls not yet implemented
 
 ## 📧 Contact
-[Your Email] | [Twitter] | [Discord]
+[makhingwah911@gmail.com] | [Twitter] | [Discord]
 
 ## 🙏 Acknowledgments
 - Original Pac-Man by Namco
