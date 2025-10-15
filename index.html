@@ -1333,6 +1333,51 @@
       }
       return {x:cx,z:cz};
     }
+    
+    // FIXED: Find center corridor spawn positions for ghosts
+    function findCenterCorridorPositions() {
+      const rows = currentMaze.length;
+      const cols = currentMaze[0].length;
+      const centerZ = Math.floor(rows / 2);
+      const centerX = Math.floor(cols / 2);
+      const positions = [];
+      
+      // Look for empty corridor spaces (value 0) near the center
+      // These are typically the ghost house areas
+      for (let r = centerZ - 3; r <= centerZ + 3; r++) {
+        for (let c = centerX - 5; c <= centerX + 5; c++) {
+          if (r >= 0 && r < rows && c >= 0 && c < cols) {
+            if (currentMaze[r][c] === 0) {
+              positions.push({x: c, z: r});
+            }
+          }
+        }
+      }
+      
+      // If we found corridor positions, use them
+      if (positions.length >= 4) {
+        return positions.slice(0, 4);
+      }
+      
+      // Fallback: find walkable positions near center
+      const fallbackPositions = [];
+      for (let r = centerZ - 2; r <= centerZ + 2; r++) {
+        for (let c = centerX - 3; c <= centerX + 3; c++) {
+          if (r >= 0 && r < rows && c >= 0 && c < cols) {
+            if (currentMaze[r][c] !== 1) {
+              fallbackPositions.push({x: c, z: r});
+            }
+          }
+        }
+      }
+      
+      // Return 4 positions, repeating if necessary
+      while (fallbackPositions.length < 4 && fallbackPositions.length > 0) {
+        fallbackPositions.push(fallbackPositions[0]);
+      }
+      
+      return fallbackPositions.slice(0, 4);
+    }
 
     function placePac(){
       const start=findStartPosition();
@@ -1667,9 +1712,10 @@
             sfx('eatGhost');
             showScorePopup(200, pacGrid.x, pacGrid.z);
             
-            const rows=currentMaze.length, cols=currentMaze[0].length;
-            const corners=[{x:1,z:1},{x:cols-2,z:1},{x:1,z:rows-2},{x:cols-2,z:rows-2}];
-            const pos=corners[i%4];
+            // FIXED: Respawn in center corridor instead of corners
+            const centerPositions = findCenterCorridorPositions();
+            const pos = centerPositions[i % centerPositions.length];
+            
             g.userData.grid={...pos}; 
             g.userData.target={...pos}; 
             g.userData.moving=false; 
